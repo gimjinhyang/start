@@ -2,7 +2,7 @@ package start.resource
 
 import org.springframework.web.bind.annotation.*
 import start.event.service.EventService
-import start.mysql.event.model.EventEntity
+import start.mysql.jpa.event.model.EventEntity
 
 @RestController
 @RequestMapping("/api/event")
