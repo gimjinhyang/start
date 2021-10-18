@@ -15,11 +15,15 @@ data class SpcdeInfo(val response: Response) {
     data class Body(val items: Items, val numOfRows: Int, val pageNo: Int, val totalCount: Int)
 
     @Serializable
-    data class Items(val item: List<Item>)
+    data class Items(var item: Item)
 
     @Serializable
     data class Item(
-        val locdate: String, val seq: Int, val dateKind: String, val isHoliday: String, val dateName: String
+        val locdate: String,
+        val seq: Int,
+        val dateKind: String,
+        val isHoliday: String,
+        val dateName: String,
     )
 
 }

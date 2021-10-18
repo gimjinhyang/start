@@ -5,5 +5,4 @@ import start.mysql.jpa.event.model.EventEntity
 
 interface EventRepository : JpaRepository<EventEntity, Int> {
 
-
 }
