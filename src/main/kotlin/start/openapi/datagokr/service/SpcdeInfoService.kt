@@ -19,8 +19,6 @@ class SpcdeInfoService() {
     fun getHoliDeInfo(year: Int, month: Int): List<SpcdeInfo.Item> {
 
         val first = getSpcdeInfo(year, month, 1)
-        println(first)
-
         if (first == null || first.response.body == null || first.response.body.items == null || first.response.body.items.item == null) {
             return emptyList()
         }
@@ -48,6 +46,7 @@ class SpcdeInfoService() {
         }
 
         val response: SpcdeInfo
+
         runBlocking {
             response = client.get(api_holiday) {
                 parameter("ServiceKey", serviceKey)
@@ -60,6 +59,9 @@ class SpcdeInfoService() {
         }
 
         client.close()
+
+        println(response)
+
         return response
     }
 
