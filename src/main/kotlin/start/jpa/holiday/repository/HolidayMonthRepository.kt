@@ -1,7 +1,7 @@
-package start.mysql.jpa.holiday.repository;
+package start.jpa.holiday.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository
-import start.mysql.jpa.holiday.model.HolidayMonthEntity
+import start.jpa.holiday.model.HolidayMonthEntity
 
 interface HolidayMonthRepository : JpaRepository<HolidayMonthEntity, Int> {
 

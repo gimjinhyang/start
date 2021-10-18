@@ -1,7 +1,7 @@
 package start.holiday.model
 
-import start.mysql.jpa.holiday.model.HolidayDayEntity
-import start.mysql.jpa.holiday.model.HolidayMonthEntity
+import start.jpa.holiday.model.HolidayDayEntity
+import start.jpa.holiday.model.HolidayMonthEntity
 import start.openapi.datagokr.model.SpcdeInfo
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

@@ -1,4 +1,4 @@
-package start.mysql.jpa.holiday.model
+package start.jpa.holiday.model
 
 import start.openapi.datagokr.model.SpcdeInfo
 import java.time.LocalDate

@@ -1,4 +1,4 @@
-package start.mysql.jpa.holiday.model
+package start.jpa.holiday.model
 
 import javax.persistence.*
 

@@ -1,4 +1,4 @@
-package start.mysql.jpa.event.model
+package start.jpa.event.model
 
 import javax.persistence.*
 

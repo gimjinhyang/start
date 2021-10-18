@@ -2,9 +2,9 @@ package start.holiday.service
 
 import org.springframework.stereotype.Service
 import start.holiday.model.HolidayList
-import start.mysql.jpa.holiday.model.HolidayDayEntity
-import start.mysql.jpa.holiday.model.HolidayMonthEntity
-import start.mysql.jpa.holiday.repository.HolidayMonthRepository
+import start.jpa.holiday.model.HolidayDayEntity
+import start.jpa.holiday.model.HolidayMonthEntity
+import start.jpa.holiday.repository.HolidayMonthRepository
 import start.openapi.datagokr.model.SpcdeInfo
 import start.openapi.datagokr.service.SpcdeInfoService
 import kotlin.streams.toList

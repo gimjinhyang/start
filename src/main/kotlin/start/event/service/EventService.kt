@@ -1,8 +1,8 @@
 package start.event.service
 
 import org.springframework.stereotype.Service
-import start.mysql.jpa.event.model.EventEntity
-import start.mysql.jpa.event.repository.EventRepository
+import start.jpa.event.model.EventEntity
+import start.jpa.event.repository.EventRepository
 
 @Service
 class EventService(val eventRepository: EventRepository) {
