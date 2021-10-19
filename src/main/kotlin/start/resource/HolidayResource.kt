@@ -13,7 +13,7 @@ class HolidayResource(val holidayService: HolidayService) {
     @GetMapping("/list")
     fun getList(year: Int, month: Int): ResponseEntity<Any> {
         val holidayList = holidayService.getList(year, month)
-        return ResponseEntity.ok(holidayList)
+        return ResponseEntity.ok(mapOf("list" to holidayList))
     }
 
 }

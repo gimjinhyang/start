@@ -9,27 +9,33 @@ import start.jpa.holiday.model.HolidayMonthEntity
 class HolidayMonthHash {
 
     @Id
-    val id: String
+    var id: String = ""
 
-    val year: Int
+    var year: Int = 0
 
-    val month: Int
+    var month: Int = 0
 
-    val dayList: MutableList<Day> = mutableListOf()
+    var dayList: MutableList<Day> = mutableListOf()
 
 
     class Day {
 
-        val day: Int
+        var day: Int = 0
 
-        val name: String
+        var name: String = ""
 
+        constructor()
 
         constructor(entity: HolidayDayEntity) {
             this.day = entity.day
             this.name = entity.name
         }
+
+
     }
+
+
+    constructor()
 
     constructor(entity: HolidayMonthEntity) {
         this.id = "${entity.year}${entity.month}"
