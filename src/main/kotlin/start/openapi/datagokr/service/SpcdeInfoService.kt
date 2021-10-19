@@ -16,11 +16,11 @@ class SpcdeInfoService() {
     val domain = "http://apis.data.go.kr"
     val api_holiday = "$domain/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo"
 
-    fun getHoliDeInfo(year: Int, month: Int): List<SpcdeInfo.Item> {
+    fun getHoliDeInfo(year: Int, month: Int): MutableList<SpcdeInfo.Item> {
 
         val first = getSpcdeInfo(year, month, 1)
         if (first == null || first.response.body == null || first.response.body.items == null || first.response.body.items.item == null) {
-            return emptyList()
+            return mutableListOf()
         }
 
         val itemList = mutableListOf(first.response.body.items.item);

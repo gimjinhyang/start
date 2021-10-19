@@ -2,7 +2,7 @@ package start.resource
 
 import org.springframework.web.bind.annotation.*
 import start.event.service.EventService
-import start.mysql.jpa.event.model.EventEntity
+import start.jpa.event.model.EventEntity
 
 @RestController
 @RequestMapping("/api/event")
@@ -12,7 +12,10 @@ class EventResource(val eventService: EventService) {
     fun getEvents(): List<EventEntity> = eventService.getEvents()
 
     @PostMapping
-    fun postEvent(@RequestBody event: EventEntity) {
+    fun postEvent(
+        @RequestBody
+        event: EventEntity
+    ) {
         eventService.save(event)
     }
 

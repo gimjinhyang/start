@@ -22,13 +22,14 @@ class HolidayDayEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "holiday_month_id")
-    var month: HolidayMonthEntity? = null
+    val month: HolidayMonthEntity
 
 
-    constructor(item: SpcdeInfo.Item) {
+    constructor(item: SpcdeInfo.Item, month: HolidayMonthEntity) {
         val date = LocalDate.parse(item.locdate, DateTimeFormatter.BASIC_ISO_DATE)
         this.day = date.dayOfMonth
         this.name = item.dateName
+        this.month = month
     }
 
 
