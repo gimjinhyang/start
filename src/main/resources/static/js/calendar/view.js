@@ -24,18 +24,16 @@ $(function () {
         })
     }
 
+
     ini_events($('#external-events div.external-event'))
 
     /* initialize the calendar
      -----------------------------------------------------------------*/
     //Date for the calendar events (dummy data)
     var date = new Date()
-    var d = date.getDate(),
-        m = date.getMonth(),
-        y = date.getFullYear()
-
-    var Calendar = FullCalendar.Calendar;
-    var Draggable = FullCalendar.Draggable;
+    var d = date.getDate()
+    var m = date.getMonth()
+    var y = date.getFullYear()
 
     var containerEl = document.getElementById('external-events');
     var checkbox = document.getElementById('drop-remove');
@@ -44,7 +42,7 @@ $(function () {
     // initialize the external events
     // -----------------------------------------------------------------
 
-    new Draggable(containerEl, {
+    new FullCalendar.Draggable(containerEl, {
         itemSelector: '.external-event',
         eventData: function (eventEl) {
             return {
@@ -56,22 +54,17 @@ $(function () {
         }
     });
 
-    var calendar = new Calendar(calendarEl, {
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
+        businessHours: {startTime: '09:00', endTime: '18:00'},
         themeSystem: 'bootstrap',
         //Random default events
         events: [
-            {
-                title: 'All Day Event',
-                start: new Date(y, m, 1),
-                backgroundColor: '#f56954', //red
-                borderColor: '#f56954', //red
-                allDay: true
-            },
             {
                 title: 'Long Event',
                 start: new Date(y, m, d - 5),
@@ -162,4 +155,28 @@ $(function () {
         // Remove event from text input
         $('#new-event').val('')
     })
+
+
+    console.log(m)
+
+    $.ajax({
+        url: "/api/holiday/list?year=" + y + "&month=" + (m + 1),
+        type: "GET",
+        dataType: "json",
+        success: function (rs, st) {
+
+            $.each(rs.list, function (i, v) {
+                calendar.addEvent({
+                    title: v.name,
+                    start: new Date(v.year, (v.month - 1), v.day),
+                    backgroundColor: '#f56954',
+                    borderColor: '#f56954',
+                    allDay: true
+                });
+            });
+
+        }
+    });
+
+
 })

@@ -17,8 +17,9 @@ class SpcdeInfoService() {
     val api_holiday = "$domain/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo"
 
     fun getHoliDeInfo(year: Int, month: Int): MutableList<SpcdeInfo.Item> {
+        val sMonth = month.toString().padStart(2, '0')
 
-        val first = getSpcdeInfo(year, month, 1)
+        val first = getSpcdeInfo(year, sMonth, 1)
         if (first == null || first.response.body == null || first.response.body.items == null || first.response.body.items.item == null) {
             return mutableListOf()
         }
@@ -27,7 +28,7 @@ class SpcdeInfoService() {
 
         if (first.response.body.totalCount > 1) {
             for (p in 2..first.response.body.totalCount) {
-                var extra = getSpcdeInfo(year, month, p)
+                var extra = getSpcdeInfo(year, sMonth, p)
                 itemList.add(extra.response.body.items.item)
             }
         }
@@ -35,7 +36,7 @@ class SpcdeInfoService() {
         return itemList
     }
 
-    private fun getSpcdeInfo(year: Int, month: Int, pageNo: Int): SpcdeInfo {
+    private fun getSpcdeInfo(year: Int, month: String, pageNo: Int): SpcdeInfo {
         val client = HttpClient(CIO) {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
