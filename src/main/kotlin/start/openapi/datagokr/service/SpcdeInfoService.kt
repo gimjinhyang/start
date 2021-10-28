@@ -1,69 +1,45 @@
 package start.openapi.datagokr.service
 
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.*
-import kotlinx.coroutines.runBlocking
+import okhttp3.OkHttpClient
 import org.springframework.stereotype.Component
-import start.openapi.datagokr.model.SpcdeInfo
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.jaxb.JaxbConverterFactory
+import start.openapi.datagokr.model.SpcdeInfoItem
+import start.openapi.datagokr.model.SpcdeInfoResponse
 
 @Component
 class SpcdeInfoService() {
 
-    val serviceKey = "FdZXQ75RUUh/0rwuqiKT7Xc+ghxyaURhnpa8C9S4Q5LU25dHwM+RmiTCZhaIT0xQeqLC+3QrhdGDBNKv6lr9eg=="
-    val domain = "http://apis.data.go.kr"
-    val api_holiday = "$domain/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo"
+    private val serviceKey = "FdZXQ75RUUh/0rwuqiKT7Xc+ghxyaURhnpa8C9S4Q5LU25dHwM+RmiTCZhaIT0xQeqLC+3QrhdGDBNKv6lr9eg=="
+    private val domain = "http://apis.data.go.kr"
 
-    fun getHoliDeInfo(year: Int, month: Int): MutableList<SpcdeInfo.Item> {
-        val sMonth = month.toString().padStart(2, '0')
+    fun getHoliDeInfo(year: Int, month: Int): MutableList<SpcdeInfoItem> {
+        val solMonth = month.toString().padStart(2, '0')
+        val retrofit = Retrofit.Builder().baseUrl(domain).client(OkHttpClient.Builder().build())
+            .addConverterFactory(JaxbConverterFactory.create()).build()
+        val service = retrofit.create(SpcdeInfoApi::class.java)
+        val call: Call<SpcdeInfoResponse> = service.getHoliDeInfo(serviceKey, 1, 20, year, solMonth)
+        val response = call.execute().body()
 
-        val first = getSpcdeInfo(year, sMonth, 1)
-        if (first == null || first.response.body == null || first.response.body.items == null || first.response.body.items.item == null) {
+        if (response?.body?.items?.item == null) {
             return mutableListOf()
         }
 
-        val itemList = mutableListOf(first.response.body.items.item);
 
-        if (first.response.body.totalCount > 1) {
-            for (p in 2..first.response.body.totalCount) {
-                var extra = getSpcdeInfo(year, sMonth, p)
-                itemList.add(extra.response.body.items.item)
-            }
-        }
+//        call.enqueue(object : Callback<SpcdeInfoResponse> {
+//            override fun onResponse(call: Call<SpcdeInfoResponse>, response: Response<SpcdeInfoResponse>) {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onFailure(call: Call<SpcdeInfoResponse>, t: Throwable) {
+//                TODO("Not yet implemented")
+//            }
+//        })
 
-        return itemList
+
+        return response.body.items.item!!
     }
 
-    private fun getSpcdeInfo(year: Int, month: String, pageNo: Int): SpcdeInfo {
-        val client = HttpClient(CIO) {
-            install(JsonFeature) {
-                serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
-                    prettyPrint = true
-                    isLenient = true
-                })
-            }
-        }
-
-        val response: SpcdeInfo
-
-        runBlocking {
-            response = client.get(api_holiday) {
-                parameter("ServiceKey", serviceKey)
-                parameter("_type", "json")
-                parameter("numOfRows", 1)
-                parameter("pageNo", pageNo)
-                parameter("solYear", year)
-                parameter("solMonth", month)
-            }
-        }
-
-        client.close()
-
-        println(response)
-
-        return response
-    }
 
 }

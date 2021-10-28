@@ -1,6 +1,6 @@
 package start.jpa.holiday.model
 
-import start.openapi.datagokr.model.SpcdeInfo
+import start.openapi.datagokr.model.SpcdeInfoItem
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.persistence.*
@@ -25,10 +25,10 @@ class HolidayDayEntity {
     val month: HolidayMonthEntity
 
 
-    constructor(item: SpcdeInfo.Item, month: HolidayMonthEntity) {
+    constructor(item: SpcdeInfoItem, month: HolidayMonthEntity) {
         val date = LocalDate.parse(item.locdate, DateTimeFormatter.BASIC_ISO_DATE)
         this.day = date.dayOfMonth
-        this.name = item.dateName
+        this.name = item.dateName!!
         this.month = month
     }
 

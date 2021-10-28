@@ -1,6 +1,6 @@
 package start.jpa.holiday.model
 
-import start.openapi.datagokr.model.SpcdeInfo
+import start.openapi.datagokr.model.SpcdeInfoItem
 import javax.persistence.*
 
 @Table(name = "holiday_month", schema = "test")
@@ -22,7 +22,7 @@ class HolidayMonthEntity {
     val dayList: MutableList<HolidayDayEntity> = mutableListOf()
 
 
-    constructor(year: Int, month: Int, itemList: List<SpcdeInfo.Item>) {
+    constructor(year: Int, month: Int, itemList: MutableList<SpcdeInfoItem>) {
         this.year = year
         this.month = month
 
@@ -32,6 +32,5 @@ class HolidayMonthEntity {
             }
         }
     }
-
 
 }

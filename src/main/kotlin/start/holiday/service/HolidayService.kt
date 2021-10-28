@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import start.holiday.model.HolidayList
 import start.jpa.holiday.model.HolidayMonthEntity
 import start.jpa.holiday.repository.HolidayMonthJpaRepository
-import start.openapi.datagokr.model.SpcdeInfo
+import start.openapi.datagokr.model.SpcdeInfoItem
 import start.openapi.datagokr.service.SpcdeInfoService
 import start.redis.holiday.model.HolidayMonthHash
 import start.redis.holiday.repository.HolidayMonthRedisRepository
@@ -18,7 +18,6 @@ class HolidayService(
 ) {
 
     fun getList(year: Int, month: Int): List<HolidayList> {
-
         val hash = getMonthHash(year, month)
         if (hash.isPresent) {
             return hash.get().dayList.map { HolidayList(hash.get(), it) }.toList()
@@ -35,6 +34,11 @@ class HolidayService(
         return itemList.map { HolidayList(it) }.toList()
     }
 
+    private fun saveMonthEntity(year: Int, month: Int, itemList: MutableList<SpcdeInfoItem>) {
+        val entity = HolidayMonthEntity(year, month, itemList)
+        holidayMonthJpaRepository.save(entity)
+    }
+
     private fun saveMonthHash(entity: HolidayMonthEntity) {
         val hash = HolidayMonthHash(entity)
         holidayMonthRedisRepository.save(hash)
@@ -42,11 +46,6 @@ class HolidayService(
 
     private fun getMonthHash(year: Int, month: Int): Optional<HolidayMonthHash> {
         return holidayMonthRedisRepository.findById("$year$month")
-    }
-
-    private fun saveMonthEntity(year: Int, month: Int, itemList: List<SpcdeInfo.Item>) {
-        val entity = HolidayMonthEntity(year, month, itemList)
-        holidayMonthJpaRepository.save(entity)
     }
 
     private fun getMonthEntity(year: Int, month: Int): Optional<HolidayMonthEntity> {
